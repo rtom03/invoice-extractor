@@ -1,0 +1,22 @@
+SUMMIT COMPONENTS
+INVOICE
+Invoice # SO-60002
+Date Issued: 01/20/2026
+Due: 02/19/2026
+Customer: AW00011016 (Customer ID 11016)
+PO Number: PO-1002
+Ship Method: Ground
+Terms: Net 30
+Bill To: Mechanical Products Ltd.
+22555 Paseo De Las Americas, San Diego, CA 92102
+Ship To: Mechanical Products Ltd.
+22555 Paseo De Las Americas, San Diego, CA 92102
+
+Line Items
+Qty | Item | Description | Unit Price | Line Total
+50 | 1 | Adjustable Race | 9.98 | 499.00
+
+Subtotal: 499.00
+Tax: 32.44
+Freight: 15.00
+Total: 546.44
