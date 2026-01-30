@@ -13,7 +13,7 @@ def orders():
         return jsonify(fetch_orders(limit=limit))
 
     payload = request.get_json(force=True, silent=True) or {}
-    payload = normalize_extraction(payload)
+    payload = normalize_extraction(payload)    
     inserted = insert_order(payload)
     return jsonify(inserted), 201
 
