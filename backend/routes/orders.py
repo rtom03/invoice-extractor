@@ -7,7 +7,7 @@ orders_bp = Blueprint("orders", __name__)
 
 
 @orders_bp.route("/api/orders", methods=["GET", "POST"])
-def orders():
+def orders():  
     if request.method == "GET":
         limit = int(request.args.get("limit", 15))
         return jsonify(fetch_orders(limit=limit))

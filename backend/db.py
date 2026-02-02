@@ -170,7 +170,6 @@ def seed_db():
         cur = conn.execute("SELECT COUNT(1) AS count FROM SalesOrderHeader")
         if cur.fetchone()["count"] > 0:
             return
-
         headers = [
             {
                 "SalesOrderID": 60001,
