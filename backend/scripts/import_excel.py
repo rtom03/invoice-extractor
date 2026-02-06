@@ -1,15 +1,15 @@
+from db import HEADER_COLUMNS, DETAIL_COLUMNS, get_conn, init_db
 import os
 import sys
 from datetime import datetime
-
 import openpyxl
 from openpyxl.utils.datetime import from_excel
+
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 BACKEND_DIR = os.path.join(ROOT, "backend")
 sys.path.insert(0, BACKEND_DIR)
 
-from db import HEADER_COLUMNS, DETAIL_COLUMNS, get_conn, init_db
 
 EXCEL_PATH = os.path.join(ROOT, "data.xlsx")
 
@@ -47,8 +47,10 @@ def main():
     init_db()
     wb = openpyxl.load_workbook(EXCEL_PATH, data_only=True)
 
-    headers = load_sheet(wb["SalesOrderHeader"]) if "SalesOrderHeader" in wb.sheetnames else []
-    details = load_sheet(wb["SalesOrderDetail"]) if "SalesOrderDetail" in wb.sheetnames else []
+    headers = load_sheet(wb["SalesOrderHeader"]
+                         ) if "SalesOrderHeader" in wb.sheetnames else []
+    details = load_sheet(wb["SalesOrderDetail"]
+                         ) if "SalesOrderDetail" in wb.sheetnames else []
 
     with get_conn() as conn:
         if "--reset" in sys.argv:
@@ -65,11 +67,13 @@ def main():
             placeholders = ", ".join(["?"] * len(values))
             conn.execute(
                 f"INSERT OR IGNORE INTO SalesOrderHeader ({cols}) VALUES ({placeholders})",
-                list(values.values()),
+                list(
+                    values.values()),
             )
 
         for row in details:
-            values = {col: row.get(col) for col in DETAIL_COLUMNS if col != "SalesOrderDetailID"}
+            values = {col: row.get(col)
+                      for col in DETAIL_COLUMNS if col != "SalesOrderDetailID"}
             cols = ", ".join(values.keys())
             placeholders = ", ".join(["?"] * len(values))
             conn.execute(
