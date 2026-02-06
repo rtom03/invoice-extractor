@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import ExtractionPanel from "./components/ExtractionPanel";
 import OrderModal from "./components/OrderModal";
 import OrdersTable from "./components/OrdersTable";

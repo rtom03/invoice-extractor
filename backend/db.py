@@ -170,7 +170,6 @@ def seed_db():
         cur = conn.execute("SELECT COUNT(1) AS count FROM SalesOrderHeader")
         if cur.fetchone()["count"] > 0:
             return
-
         headers = [
             {
                 "SalesOrderID": 60001,
@@ -389,7 +388,8 @@ def insert_order(payload):
             document = {**document}
             document["SalesOrderID"] = sales_order_id
             document["CreatedAt"] = datetime.utcnow().isoformat()
-            doc_values = {col: document.get(col) for col in DOCUMENT_COLUMNS if col != "DocumentID"}
+            doc_values = {col: document.get(col)
+                          for col in DOCUMENT_COLUMNS if col != "DocumentID"}
             cols = ", ".join(doc_values.keys())
             placeholders = ", ".join(["?"] * len(doc_values))
             conn.execute(
@@ -399,7 +399,8 @@ def insert_order(payload):
 
         for item in details:
             item = {**item, "SalesOrderID": sales_order_id}
-            detail_values = {col: item.get(col) for col in DETAIL_COLUMNS if col != "SalesOrderDetailID"}
+            detail_values = {
+                col: item.get(col) for col in DETAIL_COLUMNS if col != "SalesOrderDetailID"}
             cols = ", ".join(detail_values.keys())
             placeholders = ", ".join(["?"] * len(detail_values))
             conn.execute(
@@ -417,7 +418,8 @@ def update_order(order_id, payload):
 
     with get_conn() as conn:
         header["SalesOrderID"] = order_id
-        assignments = ", ".join([f"{col} = ?" for col in HEADER_COLUMNS if col != "SalesOrderID"])
+        assignments = ", ".join(
+            [f"{col} = ?" for col in HEADER_COLUMNS if col != "SalesOrderID"])
         values = [header.get(col) for col in HEADER_COLUMNS if col != "SalesOrderID"]
         values.append(order_id)
         conn.execute(
@@ -437,7 +439,9 @@ def update_order(order_id, payload):
                 assignments = ", ".join(
                     [f"{col} = ?" for col in DOCUMENT_COLUMNS if col not in ("DocumentID", "CreatedAt")]
                 )
-                values = [document.get(col) for col in DOCUMENT_COLUMNS if col not in ("DocumentID", "CreatedAt")]
+                values = [
+                    document.get(col) for col in DOCUMENT_COLUMNS if col not in (
+                        "DocumentID", "CreatedAt")]
                 values.append(order_id)
                 conn.execute(
                     f"UPDATE Documents SET {assignments} WHERE SalesOrderID = ?",
@@ -445,7 +449,8 @@ def update_order(order_id, payload):
                 )
             else:
                 document["CreatedAt"] = datetime.utcnow().isoformat()
-                doc_values = {col: document.get(col) for col in DOCUMENT_COLUMNS if col != "DocumentID"}
+                doc_values = {col: document.get(
+                    col) for col in DOCUMENT_COLUMNS if col != "DocumentID"}
                 cols = ", ".join(doc_values.keys())
                 placeholders = ", ".join(["?"] * len(doc_values))
                 conn.execute(
@@ -456,7 +461,8 @@ def update_order(order_id, payload):
         conn.execute("DELETE FROM SalesOrderDetail WHERE SalesOrderID = ?", (order_id,))
         for item in details:
             item = {**item, "SalesOrderID": order_id}
-            detail_values = {col: item.get(col) for col in DETAIL_COLUMNS if col != "SalesOrderDetailID"}
+            detail_values = {
+                col: item.get(col) for col in DETAIL_COLUMNS if col != "SalesOrderDetailID"}
             cols = ", ".join(detail_values.keys())
             placeholders = ", ".join(["?"] * len(detail_values))
             conn.execute(

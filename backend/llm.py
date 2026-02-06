@@ -210,10 +210,12 @@ def normalize_extraction(data, raw_text=None, filename=None, mime_type=None):
             document["DueDate"] = due_from_terms
 
     # Normalize header fields
-    header["OrderDate"] = parse_date(header.get("OrderDate") or document.get("InvoiceDate"))
+    header["OrderDate"] = parse_date(
+        header.get("OrderDate") or document.get("InvoiceDate"))
     header["DueDate"] = parse_date(header.get("DueDate") or document.get("DueDate"))
     header["ShipDate"] = parse_date(header.get("ShipDate"))
-    header["SalesOrderNumber"] = header.get("SalesOrderNumber") or document.get("InvoiceNumber")
+    header["SalesOrderNumber"] = header.get(
+        "SalesOrderNumber") or document.get("InvoiceNumber")
 
     header["CustomerID"] = safe_int(header.get("CustomerID"))
 
@@ -236,7 +238,8 @@ def normalize_extraction(data, raw_text=None, filename=None, mime_type=None):
         item["UnitPrice"] = safe_float(item.get("UnitPrice"))
         item["UnitPriceDiscount"] = safe_float(item.get("UnitPriceDiscount")) or 0.0
         item["LineTotal"] = safe_float(item.get("LineTotal"))
-        if item.get("LineTotal") is None and item.get("OrderQty") and item.get("UnitPrice") is not None:
+        if item.get("LineTotal") is None and item.get(
+                "OrderQty") and item.get("UnitPrice") is not None:
             item["LineTotal"] = item["OrderQty"] * item["UnitPrice"]
         normalized_details.append(item)
 
@@ -277,11 +280,15 @@ def mock_extract(text):
         match = re.search(pattern, text, re.IGNORECASE)
         return match.group(1).strip() if match else None
 
-    result["document"]["InvoiceNumber"] = find(r"Invoice\s*(?:No|#|Number)[:\s]*([A-Za-z0-9-]+)")
-    result["document"]["InvoiceDate"] = find(r"Invoice\s*Date[:\s]*([A-Za-z0-9/\-]+)") or find(r"Date\s*Issued[:\s]*([A-Za-z0-9/\-]+)")
-    result["document"]["DueDate"] = find(r"Due\s*Date[:\s]*([A-Za-z0-9/\-]+)") or find(r"Due[:\s]*([A-Za-z0-9/\-]+)")
+    result["document"]["InvoiceNumber"] = find(
+        r"Invoice\s*(?:No|#|Number)[:\s]*([A-Za-z0-9-]+)")
+    result["document"]["InvoiceDate"] = find(
+        r"Invoice\s*Date[:\s]*([A-Za-z0-9/\-]+)") or find(r"Date\s*Issued[:\s]*([A-Za-z0-9/\-]+)")
+    result["document"]["DueDate"] = find(
+        r"Due\s*Date[:\s]*([A-Za-z0-9/\-]+)") or find(r"Due[:\s]*([A-Za-z0-9/\-]+)")
     result["document"]["Terms"] = find(r"Terms[:\s]*([A-Za-z0-9\s-]+)")
-    result["document"]["VendorName"] = find(r"^([A-Za-z0-9 &.,-]+)\n(?:Invoice|INVOICE)")
+    result["document"]["VendorName"] = find(
+        r"^([A-Za-z0-9 &.,-]+)\n(?:Invoice|INVOICE)")
     result["document"]["BillToName"] = find(r"Bill To[:\s]*([A-Za-z0-9 &.,-]+)")
     result["document"]["ShipToName"] = find(r"Ship To[:\s]*([A-Za-z0-9 &.,-]+)")
     result["document"]["BillToAddress"] = find(r"Bill To(?:.*)\n([A-Za-z0-9 ,.-]+)")
@@ -291,8 +298,10 @@ def mock_extract(text):
     result["document"]["Freight"] = find(r"Freight[:\s]*\$?([0-9,\.]+)")
     result["document"]["Total"] = find(r"Total[:\s]*\$?([0-9,\.]+)")
 
-    result["header"]["SalesOrderNumber"] = find(r"Sales\s*Order[:\s]*([A-Za-z0-9-]+)") or result["document"].get("InvoiceNumber")
-    result["header"]["PurchaseOrderNumber"] = find(r"PO\s*(?:Number)?:\s*([A-Za-z0-9-]+)")
+    result["header"]["SalesOrderNumber"] = find(
+        r"Sales\s*Order[:\s]*([A-Za-z0-9-]+)") or result["document"].get("InvoiceNumber")
+    result["header"]["PurchaseOrderNumber"] = find(
+        r"PO\s*(?:Number)?:\s*([A-Za-z0-9-]+)")
     result["header"]["AccountNumber"] = find(r"Account\s*Number[:\s]*([A-Za-z0-9-]+)")
     result["header"]["CustomerID"] = find(r"Customer\s*ID[:\s]*([A-Za-z0-9-]+)")
 
@@ -314,7 +323,6 @@ def mock_extract(text):
                 }
             )
             continue
-
         table_pattern = r"(\d+)\s*\|\s*([A-Za-z0-9-]+)\s*\|\s*([^|]+)\|\s*([0-9.]+)\s*\|\s*([0-9.]+)"
         match = re.search(table_pattern, line)
         if match:
@@ -327,6 +335,5 @@ def mock_extract(text):
                     "LineTotal": match.group(5),
                 }
             )
-
     result["details"] = line_items
     return result
