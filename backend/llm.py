@@ -66,6 +66,7 @@ Use null for any unknown value. Provide decimals as numbers, not strings.
 
 def extract_invoice(text=None, image_b64=None, mime_type=None):
     provider = os.getenv("LLM_PROVIDER", "mock").lower()
+    # print(provider)
     if provider == "mock":
         return mock_extract(text or "")
     if provider == "openai_compatible":

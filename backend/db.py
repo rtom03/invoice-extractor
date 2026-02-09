@@ -407,7 +407,6 @@ def insert_order(payload):
                 f"INSERT INTO SalesOrderDetail ({cols}) VALUES ({placeholders})",
                 list(detail_values.values()),
             )
-
     return fetch_order(sales_order_id)
 
 

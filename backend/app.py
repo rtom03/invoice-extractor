@@ -15,7 +15,7 @@ def create_app():
     app.register_blueprint(extract_bp)
 
     init_db()
-    seed_db()
+    # seed_db()
 
     return app
 
