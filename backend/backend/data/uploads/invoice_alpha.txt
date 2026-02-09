@@ -1,0 +1,26 @@
+NORTHWIND OUTFITTERS
+Invoice No: INV-10045
+Invoice Date: 2026-01-15
+Customer ID: 11015
+Account Number: AW00011015
+Purchase Order: PO-1001
+Terms: Net 30
+
+Bill To: Engineered Bike Systems
+123 Camelia Avenue
+Oxnard, CA 93030
+
+Ship To: Engineered Bike Systems Warehouse
+99 Depot Rd
+Oxnard, CA 93030
+
+Items:
+SKU 323 - Crown Race - Qty 15 - Unit $150.00 - Line $2250.00
+SKU 2 - Bearing Ball - Qty 1 - Unit $75.00 - Line $75.00
+
+Subtotal: $2325.00
+Tax: $159.84
+Freight: $0.00
+Total: $2484.84
+
+Notes: Please include the invoice number on your check.
