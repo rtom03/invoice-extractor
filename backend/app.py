@@ -14,8 +14,8 @@ def create_app():
     app.register_blueprint(orders_bp)
     app.register_blueprint(extract_bp)
 
-    init_db()
-    # seed_db()
+    init_db()  # initialize database and exe sql command
+    seed_db()
 
     return app
 

@@ -165,7 +165,7 @@ def next_sales_order_id(conn):
     return int(max_id) + 1
 
 
-def seed_db():
+def seed_db():  # initialized data to th db if none
     with get_conn() as conn:
         cur = conn.execute("SELECT COUNT(1) AS count FROM SalesOrderHeader")
         if cur.fetchone()["count"] > 0:
