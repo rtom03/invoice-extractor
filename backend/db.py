@@ -152,19 +152,6 @@ def init_db():
         conn.executescript(SCHEMA_SQL)
 
 
-def _row_to_dict(row):
-    if row is None:
-        return None
-    return {k: row[k] for k in row.keys()}
-
-
-def next_sales_order_id(conn):
-    cur = conn.execute("SELECT MAX(SalesOrderID) AS max_id FROM SalesOrderHeader")
-    row = cur.fetchone()
-    max_id = row["max_id"] if row and row["max_id"] is not None else 50000
-    return int(max_id) + 1
-
-
 def seed_db():  # initialized data to th db if none
     with get_conn() as conn:
         cur = conn.execute("SELECT COUNT(1) AS count FROM SalesOrderHeader")
@@ -330,6 +317,12 @@ def seed_db():  # initialized data to th db if none
             )
 
 
+def _row_to_dict(row):
+    if row is None:
+        return None
+    return {k: row[k] for k in row.keys()}
+
+
 def fetch_orders(limit=25):
     with get_conn() as conn:
         rows = conn.execute(
@@ -367,6 +360,13 @@ def fetch_order(order_id):
     }
 
 
+def next_sales_order_id(conn):
+    cur = conn.execute("SELECT MAX(SalesOrderID) AS max_id FROM SalesOrderHeader")
+    row = cur.fetchone()
+    max_id = row["max_id"] if row and row["max_id"] is not None else 50000
+    return int(max_id) + 1
+
+
 def insert_order(payload):
     header = payload.get("header", {}) or {}
     document = payload.get("document", {}) or {}
@@ -396,7 +396,6 @@ def insert_order(payload):
                 f"INSERT INTO Documents ({cols}) VALUES ({placeholders})",
                 list(doc_values.values()),
             )
-
         for item in details:
             item = {**item, "SalesOrderID": sales_order_id}
             detail_values = {
