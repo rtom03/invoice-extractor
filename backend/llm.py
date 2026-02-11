@@ -1,9 +1,9 @@
 import json
 import os
 import re
-from datetime import datetime, timedelta
-
+import timedelta
 import requests
+from datetime import datetime
 
 
 SYSTEM_PROMPT = """You are an expert data extractor for sales invoices.
@@ -146,7 +146,7 @@ def normalize_extraction(data, raw_text=None, filename=None, mime_type=None):
     if mime_type:
         document.setdefault("MimeType", mime_type)
 
-    def safe_float(value):
+    def safe_float(value):  # sanitize to float
         if value is None or value == "":
             return None
         if isinstance(value, (int, float)):
@@ -158,7 +158,7 @@ def normalize_extraction(data, raw_text=None, filename=None, mime_type=None):
         except ValueError:
             return None
 
-    def safe_int(value):
+    def safe_int(value):  # sanitize to int
         if value is None or value == "":
             return None
         if isinstance(value, int):
@@ -170,7 +170,7 @@ def normalize_extraction(data, raw_text=None, filename=None, mime_type=None):
         except ValueError:
             return None
 
-    def parse_date(value):
+    def parse_date(value):  # sanitize to date
         if not value:
             return None
         if isinstance(value, datetime):
@@ -259,13 +259,15 @@ def normalize_extraction(data, raw_text=None, filename=None, mime_type=None):
 
     if document.get("Subtotal") is None:
         document["Subtotal"] = header.get("SubTotal")
+
     if document.get("Tax") is None:
         document["Tax"] = header.get("TaxAmt")
+
     if document.get("Freight") is None:
         document["Freight"] = header.get("Freight")
+
     if document.get("Total") is None:
         document["Total"] = header.get("TotalDue")
-
     return {"document": document, "header": header, "details": details}
 
 
