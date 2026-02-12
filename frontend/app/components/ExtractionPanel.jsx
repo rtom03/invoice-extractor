@@ -84,7 +84,11 @@ export default function ExtractionPanel({
           <input
             value={header.PurchaseOrderNumber || ""}
             onChange={(event) =>
-              onUpdateSection("header", "PurchaseOrderNumber", event.target.value)
+              onUpdateSection(
+                "header",
+                "PurchaseOrderNumber",
+                event.target.value,
+              )
             }
           />
         </div>
@@ -229,7 +233,11 @@ export default function ExtractionPanel({
                       <input
                         value={item.ProductName ?? ""}
                         onChange={(event) =>
-                          onUpdateDetail(index, "ProductName", event.target.value)
+                          onUpdateDetail(
+                            index,
+                            "ProductName",
+                            event.target.value,
+                          )
                         }
                       />
                     </td>

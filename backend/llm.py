@@ -1,9 +1,9 @@
 import json
 import os
 import re
-import timedelta
 import requests
-from datetime import datetime
+
+from datetime import datetime, timedelta
 
 
 SYSTEM_PROMPT = """You are an expert data extractor for sales invoices.
@@ -210,7 +210,7 @@ def normalize_extraction(data, raw_text=None, filename=None, mime_type=None):
         if due_from_terms:
             document["DueDate"] = due_from_terms
 
-    # Normalize header fields
+    # sanitize header fields
     header["OrderDate"] = parse_date(
         header.get("OrderDate") or document.get("InvoiceDate"))
     header["DueDate"] = parse_date(header.get("DueDate") or document.get("DueDate"))
@@ -285,6 +285,7 @@ def mock_extract(text):
 
     result["document"]["InvoiceNumber"] = find(
         r"Invoice\s*(?:No|#|Number)[:\s]*([A-Za-z0-9-]+)")
+    # print(result)
     result["document"]["InvoiceDate"] = find(
         r"Invoice\s*Date[:\s]*([A-Za-z0-9/\-]+)") or find(r"Date\s*Issued[:\s]*([A-Za-z0-9/\-]+)")
     result["document"]["DueDate"] = find(
@@ -314,6 +315,7 @@ def mock_extract(text):
         if not line or "Qty" in line and "Unit" in line:
             continue
         pattern = r"SKU\s*([A-Za-z0-9-]+)\s*-\s*([^\-]+)\s*-\s*Qty\s*(\d+)\s*-\s*Unit\s*\$?([0-9.]+)\s*-\s*Line\s*\$?([0-9.]+)"
+        # print(pattern)
         match = re.search(pattern, line, re.IGNORECASE)
         if match:
             line_items.append(

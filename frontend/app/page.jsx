@@ -71,6 +71,7 @@ export default function Home() {
     try {
       const res = await fetch(`${API_BASE}/api/orders?limit=25`);
       const data = await res.json();
+      // console.log(data);
       if (!res.ok) {
         throw new Error(data.error || "Failed to load orders.");
       }
