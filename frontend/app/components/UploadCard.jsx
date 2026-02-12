@@ -1,4 +1,9 @@
-export default function UploadCard({ onFileChange, onExtract, statusMessage, loading }) {
+export default function UploadCard({
+  onFileChange,
+  onExtract,
+  statusMessage,
+  loading,
+}) {
   return (
     <div className="card" style={{ animationDelay: "0.05s" }}>
       <h2>Upload & Extract</h2>

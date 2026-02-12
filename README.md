@@ -79,6 +79,8 @@ cd backend
 python scripts/import_excel.py --reset
 ```
 
+1
+
 ## Scaling Strategies (talking points)
 
 - **Throughput**: Move extraction to a worker queue (Celery/RQ) with autoscaling workers; return job IDs and stream results to the UI.

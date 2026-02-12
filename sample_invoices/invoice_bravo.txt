@@ -1,10 +1,11 @@
 SUMMIT COMPONENTS
 INVOICE
-Invoice # SO-60002
+Invoice # SO-60009
+Vendor Name: Stryker
 Date Issued: 01/20/2026
 Due: 02/19/2026
 Customer: AW00011016 (Customer ID 11016)
-PO Number: PO-1002
+PO Number: PO-1002  
 Ship Method: Ground
 Terms: Net 30
 Bill To: Mechanical Products Ltd.

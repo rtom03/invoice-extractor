@@ -51,13 +51,16 @@ def extract():
         return jsonify({"error": "Missing file"}), 400
 
     file = request.files["file"]
+    # print(file)
     if not file.filename:
         return jsonify({"error": "Empty filename"}), 400
 
     filename = secure_filename(file.filename)
     data = file.read()
-    mime_type = file.mimetype or mimetypes.guess_type(filename)[0] or "application/octet-stream"
-
+    # print(data)
+    mime_type = file.mimetype or mimetypes.guess_type(
+        filename)[0] or "application/octet-stream"
+    # print(mime_type)
     os.makedirs(UPLOAD_DIR, exist_ok=True)
     file_path = os.path.join(UPLOAD_DIR, filename)
     with open(file_path, "wb") as f:
@@ -65,16 +68,22 @@ def extract():
 
     text = load_text_from_file(data, filename, mime_type)
     image_b64 = None
+    # print(text)
 
     if mime_type.startswith("image/"):
         image_b64 = base64.b64encode(data).decode("ascii")
+        # print(image_b64)
 
     if not text and not image_b64:
         return jsonify({"error": "Unsupported file type or empty content"}), 400
 
     start = perf_counter()
     extracted = extract_invoice(text=text, image_b64=image_b64, mime_type=mime_type)
-    normalized = normalize_extraction(extracted, raw_text=text, filename=filename, mime_type=mime_type)
+    normalized = normalize_extraction(
+        extracted,
+        raw_text=text,
+        filename=filename,
+        mime_type=mime_type)
     normalized["meta"] = {"processing_ms": int((perf_counter() - start) * 1000)}
 
     return jsonify(normalized)
