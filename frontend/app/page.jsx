@@ -278,6 +278,7 @@ export default function Home() {
         loading={modalLoading}
         error={modalError}
         order={selectedOrder}
+        setModalOpen={setModalOpen}
       />
     </main>
   );

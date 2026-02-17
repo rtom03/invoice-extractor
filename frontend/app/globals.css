@@ -20,8 +20,16 @@ body {
   font-family: var(--font-body), "Segoe UI", sans-serif;
   color: var(--ink);
   background:
-    radial-gradient(circle at top right, rgba(227, 106, 46, 0.18), transparent 55%),
-    radial-gradient(circle at 20% 20%, rgba(29, 111, 106, 0.15), transparent 50%),
+    radial-gradient(
+      circle at top right,
+      rgba(227, 106, 46, 0.18),
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(29, 111, 106, 0.15),
+      transparent 50%
+    ),
     linear-gradient(135deg, var(--bg), var(--bg-accent));
   min-height: 100vh;
 }
@@ -90,7 +98,11 @@ main.page {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(227, 106, 46, 0.18), transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(227, 106, 46, 0.18),
+    transparent 70%
+  );
   opacity: 0.8;
 }
 
@@ -132,7 +144,9 @@ main.page {
   color: #fff;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .button.secondary {
@@ -275,7 +289,6 @@ main.page {
   }
 }
 
-
 .table.clickable tbody tr {
   cursor: pointer;
   transition: background 0.2s ease;
@@ -344,4 +357,10 @@ main.page {
 .modal-section p {
   margin: 0 0 6px;
   font-size: 14px;
+}
+
+.m-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
