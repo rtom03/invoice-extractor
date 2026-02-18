@@ -1,11 +1,35 @@
-export default function OrderModal({ open, onClose, loading, error, order }) {
+export default function OrderModal({
+  open,
+  onClose,
+  loading,
+  error,
+  order,
+  setModalOpen,
+}) {
   if (!open) {
     return null;
   }
-
+  const API_BASE =
+    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api/orders";
   const header = order?.header || {};
   const doc = order?.document || {};
   const details = order?.details || [];
+
+  const removeInvoice = async (id) => {
+    try {
+      const request = await fetch(`${API_BASE}/${id}`, {
+        method: "DELETE",
+      });
+      if (!request.ok) {
+        throw new Error(data.error || "Failed to load orders.");
+      }
+      setModalOpen(false);
+      const response = await request.json();
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
@@ -15,9 +39,18 @@ export default function OrderModal({ open, onClose, loading, error, order }) {
             <h3>Order {header.SalesOrderID || "-"}</h3>
             <p>{doc.VendorName || "Vendor not set"}</p>
           </div>
-          <button className="button secondary" onClick={onClose}>
-            Close
-          </button>
+          <div className="m-btn">
+            <button
+              className="button secondary"
+              style={{ backgroundColor: "red" }}
+              onClick={() => removeInvoice(header.SalesOrderID)}
+            >
+              Delete
+            </button>
+            <button className="button secondary" onClick={onClose}>
+              Close
+            </button>
+          </div>
         </div>
 
         {loading && <p className="status">Loading order...</p>}
