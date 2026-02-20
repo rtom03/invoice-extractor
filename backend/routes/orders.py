@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from db import db_snapshot, fetch_order, fetch_orders, insert_order, update_order
+from db import db_snapshot, fetch_order, fetch_orders, insert_order, update_order, del_invoice
 from llm import normalize_extraction
 
 orders_bp = Blueprint("orders", __name__)
@@ -16,14 +16,19 @@ def orders():
     return jsonify(inserted), 201
 
 
-@orders_bp.route("/api/orders/<int:order_id>", methods=["GET", "PUT"])
+@orders_bp.route("/api/orders/<int:order_id>", methods=["GET", "PUT", "DELETE"])
 def order_detail(order_id):
     if request.method == "GET":
         return jsonify(fetch_order(order_id))
-    payload = request.get_json(force=True, silent=True) or {}
-    payload = normalize_extraction(payload)
-    updated = update_order(order_id, payload)
-    return jsonify(updated)
+    elif request.method == "PUT":
+        payload = request.get_json(force=True, silent=True)
+        payload = normalize_extraction(payload)
+        updated = update_order(order_id, payload)
+        return jsonify(updated)
+    else:
+        print(order_id)
+        deleted_invoice = del_invoice(order_id)
+        return jsonify(deleted_invoice)
 
 
 @orders_bp.route("/api/db_snapshot", methods=["GET"])
