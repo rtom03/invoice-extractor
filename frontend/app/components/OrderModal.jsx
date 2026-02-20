@@ -45,7 +45,7 @@ export default function OrderModal({
               style={{ backgroundColor: "red" }}
               onClick={() => removeInvoice(header.SalesOrderID)}
             >
-              Delete
+              {loading ? "Loading...." : "Delete"}
             </button>
             <button className="button secondary" onClick={onClose}>
               Close

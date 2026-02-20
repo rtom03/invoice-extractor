@@ -467,8 +467,17 @@ def update_order(order_id, payload):
                 f"INSERT INTO SalesOrderDetail ({cols}) VALUES ({placeholders})",
                 list(detail_values.values()),
             )
-
     return fetch_order(order_id)
+
+
+def del_invoice(order_id):
+    with get_conn() as conn:
+        cursor = conn.execute(
+            "DELETE FROM SalesOrderHeader WHERE SalesOrderID = ?",
+            (order_id,))
+        if cursor.rowcount == 0:
+            return f"No order with ID {order_id} found"
+    return order_id
 
 
 def db_snapshot(limit=10):
